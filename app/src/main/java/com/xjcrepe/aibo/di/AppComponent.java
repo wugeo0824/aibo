@@ -1,13 +1,10 @@
 package com.xjcrepe.aibo.di;
 
-import android.app.Application;
-
 import com.xjcrepe.aibo.AiboApplication;
 import com.xjcrepe.aibo.network.NetworkModule;
 
 import javax.inject.Singleton;
 
-import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
@@ -17,16 +14,12 @@ import dagger.android.support.AndroidSupportInjectionModule;
         AndroidSupportInjectionModule.class,
         ApplicationModule.class,
         ActivityBindingModule.class,
-        NetworkModule.class
+        NetworkModule.class,
+        ViewModelBuilder.class,
 })
 public interface AppComponent extends AndroidInjector<AiboApplication> {
 
     @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        AppComponent.Builder application(Application application);
-
-        AppComponent build();
+    abstract class Builder extends AndroidInjector.Builder<AiboApplication> {
     }
 }

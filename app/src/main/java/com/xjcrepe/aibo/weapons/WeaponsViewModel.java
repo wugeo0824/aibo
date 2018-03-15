@@ -1,7 +1,7 @@
 package com.xjcrepe.aibo.weapons;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.xjcrepe.aibo.base.RxAwareViewModel;
 import com.xjcrepe.aibo.base.RxSchedulers;
@@ -21,7 +21,7 @@ public class WeaponsViewModel extends RxAwareViewModel {
     private final RxSchedulers rxSchedulers;
 
     @Inject
-    public WeaponsViewModel(MHWService mhwService, RxSchedulers rxSchedulers) {
+    WeaponsViewModel(MHWService mhwService, RxSchedulers rxSchedulers) {
         this.mhwService = mhwService;
         this.rxSchedulers = rxSchedulers;
     }
@@ -31,15 +31,23 @@ public class WeaponsViewModel extends RxAwareViewModel {
     public MutableLiveData<List<Weapon>> getWeapons() {
         if (weaponMutableLiveData == null) {
             weaponMutableLiveData = new MutableLiveData<>();
+        }
+
+        if (weaponMutableLiveData.getValue() == null || weaponMutableLiveData.getValue().isEmpty()) {
             loadWeapons();
         }
+
+        Log.d("MutableLiveData", "getWeapons: ");
 
         return weaponMutableLiveData;
     }
 
     private void loadWeapons() {
+        Log.d("MutableLiveData", "loadWeapons: ");
+
         mhwService.getWeapons()
                 .subscribeOn(rxSchedulers.getNetwork())
+                .observeOn(rxSchedulers.getUi())
                 .subscribe(new SingleObserver<List<Weapon>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -49,11 +57,12 @@ public class WeaponsViewModel extends RxAwareViewModel {
                     @Override
                     public void onSuccess(List<Weapon> weapons) {
                         weaponMutableLiveData.setValue(weapons);
+                        Log.d("MutableLiveData", "onSuccess: " + weapons.size());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d("MutableLiveData", "onError: " + e.toString());
                     }
                 });
     }

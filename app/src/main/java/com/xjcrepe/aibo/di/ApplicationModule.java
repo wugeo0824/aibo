@@ -12,14 +12,14 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public abstract class ApplicationModule {
+abstract class ApplicationModule {
 
     @Binds
     abstract Context bindContext(Application application);
 
     @Provides
     @Singleton
-    RxSchedulers provideRxScedulers() {
+    static RxSchedulers provideRxSchedulers() {
         return new RxSchedulers();
     }
 }
