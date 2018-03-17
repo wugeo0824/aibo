@@ -48,11 +48,9 @@ public class WeaponsActivity extends DaggerAppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        Log.d("onStart", "on start: ");
         weaponsViewModel.getWeapons().observe(this, new Observer<List<Weapon>>() {
             @Override
             public void onChanged(@Nullable List<Weapon> weapons) {
-                Log.d("onStart", "onChanged: ");
                 if (weapons != null) {
                     tvWeaponsCount.setText("size is: " + weapons.size());
                 } else {

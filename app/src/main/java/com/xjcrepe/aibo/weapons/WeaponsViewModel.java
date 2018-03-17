@@ -1,7 +1,6 @@
 package com.xjcrepe.aibo.weapons;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
 import com.xjcrepe.aibo.base.RxAwareViewModel;
 import com.xjcrepe.aibo.base.RxSchedulers;
@@ -37,14 +36,10 @@ public class WeaponsViewModel extends RxAwareViewModel {
             loadWeapons();
         }
 
-        Log.d("MutableLiveData", "getWeapons: ");
-
         return weaponMutableLiveData;
     }
 
     private void loadWeapons() {
-        Log.d("MutableLiveData", "loadWeapons: ");
-
         mhwService.getWeapons()
                 .subscribeOn(rxSchedulers.getNetwork())
                 .observeOn(rxSchedulers.getUi())
@@ -57,12 +52,10 @@ public class WeaponsViewModel extends RxAwareViewModel {
                     @Override
                     public void onSuccess(List<Weapon> weapons) {
                         weaponMutableLiveData.setValue(weapons);
-                        Log.d("MutableLiveData", "onSuccess: " + weapons.size());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("MutableLiveData", "onError: " + e.toString());
                     }
                 });
     }
