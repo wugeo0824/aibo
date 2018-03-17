@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xjcrepe.aibo.R;
 import com.xjcrepe.aibo.model.Weapon;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,9 +29,10 @@ public class WeaponsActivity extends DaggerAppCompatActivity {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    @BindView(R.id.tvWeaponsCount)
-    TextView tvWeaponsCount;
+    @BindView(R.id.rvWeapons)
+    RecyclerView rvWeapons;
 
+    private WeaponsAdapter weaponsAdapter;
     private WeaponsViewModel weaponsViewModel;
 
     public static Intent createIntent(Context context) {
@@ -42,6 +46,10 @@ public class WeaponsActivity extends DaggerAppCompatActivity {
         ButterKnife.bind(this);
 
         weaponsViewModel = ViewModelProviders.of(this, viewModelFactory).get(WeaponsViewModel.class);
+
+        weaponsAdapter = new WeaponsAdapter(Collections.<Weapon>emptyList());
+        rvWeapons.setHasFixedSize(false);
+        rvWeapons.setAdapter(weaponsAdapter);
     }
 
     @Override
@@ -52,9 +60,9 @@ public class WeaponsActivity extends DaggerAppCompatActivity {
             @Override
             public void onChanged(@Nullable List<Weapon> weapons) {
                 if (weapons != null) {
-                    tvWeaponsCount.setText("size is: " + weapons.size());
+                    weaponsAdapter.refresh(weapons.subList(0, 10));
                 } else {
-                    tvWeaponsCount.setText("Null Weapons Data");
+                    Toast.makeText(WeaponsActivity.this, "Null Weapon Data", Toast.LENGTH_SHORT).show();
                 }
             }
         });
