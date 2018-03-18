@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 
 import com.xjcrepe.aibo.base.RxAwareViewModel;
 import com.xjcrepe.aibo.base.RxSchedulers;
+import com.xjcrepe.aibo.data.WeaponRepository;
 import com.xjcrepe.aibo.model.Weapon;
 import com.xjcrepe.aibo.network.MHWService;
 
@@ -16,47 +17,25 @@ import io.reactivex.disposables.Disposable;
 
 public class WeaponsViewModel extends RxAwareViewModel {
 
-    private final MHWService mhwService;
+    private final WeaponRepository weaponRepository;
     private final RxSchedulers rxSchedulers;
+    private MutableLiveData<List<Weapon>> weaponMutableLiveData;
 
     @Inject
-    WeaponsViewModel(MHWService mhwService, RxSchedulers rxSchedulers) {
-        this.mhwService = mhwService;
+    WeaponsViewModel(WeaponRepository weaponRepository, RxSchedulers rxSchedulers) {
+        this.weaponRepository = weaponRepository;
         this.rxSchedulers = rxSchedulers;
     }
 
-    private MutableLiveData<List<Weapon>> weaponMutableLiveData;
-
     public MutableLiveData<List<Weapon>> getWeapons() {
         if (weaponMutableLiveData == null) {
-            weaponMutableLiveData = new MutableLiveData<>();
+            weaponMutableLiveData = weaponRepository.getWeaponsLiveData();
         }
 
         if (weaponMutableLiveData.getValue() == null || weaponMutableLiveData.getValue().isEmpty()) {
-            loadWeapons();
+            weaponRepository.loadWeapons(1);
         }
 
         return weaponMutableLiveData;
-    }
-
-    private void loadWeapons() {
-        mhwService.getWeapons()
-                .subscribeOn(rxSchedulers.getNetwork())
-                .observeOn(rxSchedulers.getUi())
-                .subscribe(new SingleObserver<List<Weapon>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposeWhenClear(d);
-                    }
-
-                    @Override
-                    public void onSuccess(List<Weapon> weapons) {
-                        weaponMutableLiveData.setValue(weapons);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-                });
     }
 }

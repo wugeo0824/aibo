@@ -1,5 +1,12 @@
 package com.xjcrepe.aibo.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.xjcrepe.aibo.data.AiboTypeConverters;
+
 /**
  * id	Integer	The weapon's ID
  * slug	String	A human readable unique identifier
@@ -9,13 +16,44 @@ package com.xjcrepe.aibo.model;
  * attributes	Attributes	An object describing the attributes of the weapon
  */
 
+@Entity(tableName = "weapons")
+@TypeConverters(AiboTypeConverters.class)
 public class Weapon {
 
+    @PrimaryKey
     private int id;
+
+    @ColumnInfo(name = "slug")
     private String slug;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "type")
     private WeaponType type;
+
+    @ColumnInfo(name = "rarity")
     private int rarity;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(WeaponType type) {
+        this.type = type;
+    }
+
+    public void setRarity(int rarity) {
+        this.rarity = rarity;
+    }
 
     public int getId() {
         return id;

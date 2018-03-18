@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.xjcrepe.aibo.model.Weapon;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 public class WeaponsAdapter extends RecyclerView.Adapter<WeaponViewHolder> {
 

@@ -58,11 +58,21 @@ public class WeaponsActivity extends DaggerAppCompatActivity {
 
         weaponsViewModel.getWeapons().observe(this, new Observer<List<Weapon>>() {
             @Override
-            public void onChanged(@Nullable List<Weapon> weapons) {
+            public void onChanged(@Nullable final List<Weapon> weapons) {
                 if (weapons != null) {
-                    weaponsAdapter.refresh(weapons.subList(0, 10));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            weaponsAdapter.refresh(weapons.subList(0, 10));
+                        }
+                    });
                 } else {
-                    Toast.makeText(WeaponsActivity.this, "Null Weapon Data", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(WeaponsActivity.this, "Null Weapon Data", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
