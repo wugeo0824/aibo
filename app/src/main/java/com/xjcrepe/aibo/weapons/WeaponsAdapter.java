@@ -1,5 +1,6 @@
 package com.xjcrepe.aibo.weapons;
 
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -18,12 +19,11 @@ public class WeaponsAdapter extends RecyclerView.Adapter<WeaponViewHolder> {
     }
 
     public void refresh(List<Weapon> weaponsNew) {
-//        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new WeaponsDiffCallback(weaponList, weaponsNew));
-//        diffResult.dispatchUpdatesTo(this);
         weaponList = weaponsNew;
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
     public WeaponViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return WeaponViewHolder.initViewHolder(parent);

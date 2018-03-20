@@ -29,13 +29,35 @@ public class WeaponsViewModel extends RxAwareViewModel {
 
     public MutableLiveData<List<Weapon>> getWeapons() {
         if (weaponMutableLiveData == null) {
-            weaponMutableLiveData = weaponRepository.getWeaponsLiveData();
+            weaponMutableLiveData = new MutableLiveData<>();
         }
 
         if (weaponMutableLiveData.getValue() == null || weaponMutableLiveData.getValue().isEmpty()) {
-            weaponRepository.loadWeapons(1);
+            loadWeapons();
         }
 
         return weaponMutableLiveData;
+    }
+
+    private void loadWeapons() {
+        weaponRepository.loadWeapons(1)
+                .observeOn(rxSchedulers.getUi())
+                .subscribe(new SingleObserver<List<Weapon>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        // TODO: send loading state
+                        disposeWhenClear(d);
+                    }
+
+                    @Override
+                    public void onSuccess(List<Weapon> weapons) {
+                        weaponMutableLiveData.setValue(weapons);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // TODO: send error state
+                    }
+                });
     }
 }

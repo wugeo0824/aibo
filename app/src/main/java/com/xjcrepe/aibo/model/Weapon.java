@@ -17,7 +17,7 @@ import com.xjcrepe.aibo.data.AiboTypeConverters;
  */
 
 @Entity(tableName = "weapons")
-@TypeConverters(AiboTypeConverters.class)
+//@TypeConverters(AiboTypeConverters.class)
 public class Weapon {
 
     @PrimaryKey
@@ -30,7 +30,7 @@ public class Weapon {
     private String name;
 
     @ColumnInfo(name = "type")
-    private WeaponType type;
+    private String type;
 
     @ColumnInfo(name = "rarity")
     private int rarity;
@@ -47,7 +47,7 @@ public class Weapon {
         this.name = name;
     }
 
-    public void setType(WeaponType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -67,7 +67,7 @@ public class Weapon {
         return name;
     }
 
-    public WeaponType getType() {
+    public String getType() {
         return type;
     }
 
@@ -86,7 +86,7 @@ public class Weapon {
         if (rarity != weapon.rarity) return false;
         if (!slug.equals(weapon.slug)) return false;
         if (!name.equals(weapon.name)) return false;
-        return type == weapon.type;
+        return type.equals(weapon.type);
     }
 
     @Override

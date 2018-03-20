@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class WeaponsActivity extends DaggerAppCompatActivity {
         weaponsViewModel = ViewModelProviders.of(this, viewModelFactory).get(WeaponsViewModel.class);
 
         weaponsAdapter = new WeaponsAdapter(Collections.<Weapon>emptyList());
+        rvWeapons.setLayoutManager(new LinearLayoutManager(this));
         rvWeapons.setHasFixedSize(false);
         rvWeapons.setAdapter(weaponsAdapter);
     }
