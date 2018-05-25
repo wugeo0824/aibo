@@ -6,18 +6,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RxSchedulers {
 
-    private final Scheduler network;
+    private final Scheduler io;
     private final Scheduler ui;
     private final Scheduler computation;
 
     public RxSchedulers() {
-        network = Schedulers.io();
+        io = Schedulers.io();
         ui = AndroidSchedulers.mainThread();
         computation = Schedulers.computation();
     }
 
-    public Scheduler getNetwork() {
-        return network;
+    public Scheduler getIo() {
+        return io;
     }
 
     public Scheduler getUi() {
